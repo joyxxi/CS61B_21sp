@@ -110,6 +110,18 @@ public class Model extends Observable {
         boolean changed;
         changed = false;
 
+//       Set the view to specific side
+        if (side != Side.NORTH) {
+            board.setViewingPerspective(side);
+        }
+//       Iterate through different tiles
+        for (int col = 0; col < board.size(); col++) {
+                changed = singleColMove(col, changed);
+        }
+//       Set the view back to North
+        if (side != Side.NORTH) {
+            board.setViewingPerspective(Side.NORTH);
+        }
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
@@ -120,6 +132,37 @@ public class Model extends Observable {
         }
         return changed;
     }
+
+/** Perform the single column movement */
+    public boolean singleColMove(int col, boolean changed) {
+        int goalRow = board.size() - 1;
+        for (int currentRow = board.size()-2; currentRow >= 0; currentRow--) {
+            if (board.tile(col, currentRow) == null) {
+                continue;
+            }
+
+            Tile currentT = board.tile(col, currentRow);
+
+            while (goalRow > currentRow) {
+                if (board.tile(col, goalRow) == null) {
+                    board.move(col, goalRow, currentT);
+                    changed = true;
+                    break;
+                } else if (currentT.value() == board.tile(col, goalRow).value()) {
+                    board.move(col, goalRow, currentT);
+                    score += board.tile(col, goalRow).value();
+                    goalRow -= 1;
+                    changed = true;
+                    break;
+                } else {
+                    goalRow -= 1;
+                }
+            }
+        }
+
+        return changed;
+    }
+
 
     /** Checks if the game is over and sets the gameOver variable
      *  appropriately.
@@ -137,7 +180,15 @@ public class Model extends Observable {
      *  Empty spaces are stored as null.
      * */
     public static boolean emptySpaceExists(Board b) {
-        // TODO: Fill in this function.
+//        Get the size of the board
+//        Iterate through the board. If we get null, return true
+        for (int i = 0; i < b.size(); i++) {
+            for (int j = 0; j < b.size(); j++) {
+                if (b.tile(i, j) == null) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -147,7 +198,17 @@ public class Model extends Observable {
      * given a Tile object t, we get its value with t.value().
      */
     public static boolean maxTileExists(Board b) {
-        // TODO: Fill in this function.
+        for (int i = 0; i < b.size(); i++){
+            for (int j = 0; j < b.size(); j++) {
+                if (b.tile(i, j) == null) {
+                    continue;
+                }
+                Tile t = b.tile(i, j);
+                if (t.value() == MAX_PIECE) {
+                        return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -158,7 +219,29 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
+//        1. Check if there is empty space
+        if (emptySpaceExists(b)) {
+            return true;
+        }
+//        2. Check if there are two adjacent tiles with the same value
+        return sameValueExists(b);
+    }
+
+    public static boolean sameValueExists(Board b) {
+        for (int i = 0; i < b.size(); i++){
+            for (int j = 0; j < b.size(); j++) {
+                if (i + 1 < b.size()) {
+                    if (b.tile(i, j).value() == b.tile(i+1, j).value()) {
+                        return true;
+                    }
+                }
+                if (j + 1 < b.size()) {
+                    if (b.tile(i, j).value() == b.tile(i, j+1).value()) {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
