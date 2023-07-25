@@ -20,7 +20,7 @@ public class ArrayDeque<T> {
     }
 
     /** Adds an item of type of T to the front of the deque. */
-    public void addFist(T item) {
+    public void addFirst(T item) {
         //Check if the array is full
 /*        if (size == items.length) {
             resize();

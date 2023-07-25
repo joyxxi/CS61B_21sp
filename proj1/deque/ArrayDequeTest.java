@@ -14,7 +14,7 @@ public class ArrayDequeTest {
 
         assertTrue("The newly built deque should be empty.", ad1.isEmpty());
 
-        ad1.addFist("Front");
+        ad1.addFirst("Front");
         assertEquals(1, ad1.size());
         assertFalse("ld1 should now contain 1 item.", ad1.isEmpty());
 
@@ -33,8 +33,8 @@ public class ArrayDequeTest {
     public void removeTest() {
         ArrayDeque<Integer> ad1 = new ArrayDeque<>();
 
-        ad1.addFist(2);
-        ad1.addFist(1);
+        ad1.addFirst(2);
+        ad1.addFirst(1);
         ad1.addLast(3);
 
         int rm1 = ad1.removeFirst();
