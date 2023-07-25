@@ -13,7 +13,7 @@ public class ArrayDeque<T> {
 
     /** Creates an empty list. */
     public ArrayDeque() {
-        items = (T []) new Object[16];
+        items = (T[]) new Object[16];
         size = 0;
         nextFirst = 0;
         nextLast = 1;

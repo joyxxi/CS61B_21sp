@@ -25,8 +25,8 @@ public class LinkedListDeque<T> {
         }
     }
 
-    public Node sentinel;
-    public int size;
+    private Node sentinel;
+    private int size;
 
     /** Constructor of the deque. */
     public LinkedListDeque() {
