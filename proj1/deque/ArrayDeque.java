@@ -22,9 +22,9 @@ public class ArrayDeque<T> {
     /** Adds an item of type of T to the front of the deque. */
     public void addFist(T item) {
         //Check if the array is full
-        if (size == items.length) {
+/*        if (size == items.length) {
             resize();
-        }
+        }*/
 
         items[nextFirst] = item;
         nextFirst = forwardNext(nextFirst);
@@ -34,9 +34,9 @@ public class ArrayDeque<T> {
 
     /** Adds an item of type of T to the back of the deque. */
     public void addLast(T item) {
-        if (size == items.length) {
+/*        if (size == items.length) {
             resize();
-        }
+        }*/
 
         items[nextLast] = item;
         nextLast = backwardNext(nextLast);
