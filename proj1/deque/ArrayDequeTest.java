@@ -42,8 +42,10 @@ public class ArrayDequeTest{
         assertEquals("Should return the item removed before",1, rm1);
 
         int rm2 = ad1.removeLast();
-        assertEquals(1, ad1.size());
+        int rm3 = ad1.removeLast();
+        assertTrue(ad1.isEmpty());
         assertEquals("Should return the item removed before", 3, rm2);
+        assertEquals("Should return the item removed before", 2, rm3);
 
         ad1.removeFirst();
         assertTrue("The deque should be empty now", ad1.isEmpty());
@@ -121,7 +123,7 @@ public class ArrayDequeTest{
         //Test: Compare deque with different size.
         assertFalse("Should return false", ad1.equals(ad4));
         //Test: Compare deque with different types.
-        assertFalse("Should return false", ad1.equals(lld1));
+        assertTrue("LinkedListDeque/ArrayDeque with the same elements should return true", ad1.equals(lld1));
     }
 
 

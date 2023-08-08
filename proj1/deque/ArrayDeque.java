@@ -59,14 +59,15 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         return size;
     }
 
-    /** For arrays of length 16 or more, adjust the length of the array when usage factor is lower than 25%.
+    /** For arrays of length 16 or more,
+     * adjust the length of the array when usage factor is lower than 25%.
      * usageFactor = size / length */
     private void usageControl() {
         if (items.length >= 16) {
             float usageFactor = ((float) size / items.length);
             if (usageFactor < 0.25) {
                 //Change the usage factor to 50%.
-                resize(size * 2);
+                resize(items.length / 2);
             }
         }
     }
@@ -76,10 +77,13 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         //Make sure the nextFirst and nextLast do not change;
         T[] newArray = (T[]) new Object[capacity];
         int firstPos = backwardNext(nextFirst);
-        System.arraycopy(items, firstPos, newArray, 0, size-firstPos);
-        System.arraycopy(items, 0, newArray, size-firstPos, firstPos);
+        for (int i = 0; i < size; i++) {
+            newArray[i] = items[ithItemPos(i)];
+        }
+//        System.arraycopy(items, firstPos, newArray, 0, items.length - firstPos);
+//        System.arraycopy(items, 0, newArray, items.length - firstPos, firstPos);
         items = newArray;
-        nextFirst = items.length-1;
+        nextFirst = items.length - 1;
         nextLast = size;
     }
 
@@ -96,7 +100,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
             i = backwardNext(i);
         }
         System.out.println(items[i]);
-        }
+    }
 
 
     /** Return the next index+1 position. */
@@ -114,6 +118,15 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
             return items.length - 1;
         }
         return i - 1;
+    }
+
+    /** Returns the reasonable position of the Ith item in the deque. */
+    private int ithItemPos(int i) {
+        if (nextFirst + 1 + i >= items.length) {
+            return nextFirst + 1 + i - items.length;
+        } else {
+            return nextFirst + 1 + i;
+        }
     }
 
     /** Removes and returns the item at the front of the deque. */
@@ -157,14 +170,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         if (index >= size) {
             return null;
         }
-        int start = backwardNext(nextFirst);
-        int pos;
-        if (index < items.length-start) {
-            pos = start + index;
-        } else {
-            pos = index - (items.length - start);
-        }
-        return items[pos];
+        return items[ithItemPos(index)];
 //        while (index > 0) {
 //            start = backwardNext(start);
 //            index--;
@@ -182,7 +188,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
 
         @Override
         public boolean hasNext() {
-            return items[pos] == null;
+            return items[pos] != null;
         }
 
         @Override
@@ -201,15 +207,14 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         if (o == null) {
             return false;
         }
-        if (! (o instanceof ArrayDeque)) {
+        if (!(o instanceof Deque other)) {
             return false;
         }
 
-        ArrayDeque other = (ArrayDeque) o;
-        if (size != other.size) {
+        if (size() != other.size()) {
             return false;
         }
-        for (int i = 0; i < size - 1; i++) {
+        for (int i = 0; i < size() - 1; i++) {
             T thisItem = get(i);
             Object otherItem = other.get(i);
             if (!thisItem.equals(otherItem)) {
