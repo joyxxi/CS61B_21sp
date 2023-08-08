@@ -201,17 +201,19 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         if (o == null) {
             return false;
         }
-        if (o instanceof ArrayDeque other) {
-            if (size != other.size) {
+        if (! (o instanceof ArrayDeque)) {
+            return false;
+        }
+
+        ArrayDeque other = (ArrayDeque) o;
+        if (size != other.size) {
+            return false;
+        }
+        for (int i = 0; i < size - 1; i++) {
+            T thisItem = get(i);
+            Object otherItem = other.get(i);
+            if (!thisItem.equals(otherItem)) {
                 return false;
-            }
-            int firsPos = backwardNext(nextFirst);
-            for (int i = 0; i < size - 1; i++) {
-                T thisItem = get(i);
-                Object otherItem = other.get(i);
-                if (!thisItem.equals(otherItem)) {
-                    return false;
-                }
             }
         }
         return true;

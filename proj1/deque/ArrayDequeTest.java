@@ -106,6 +106,10 @@ public class ArrayDequeTest{
         for (int i = 0; i < 5; i++) {
             ad4.addLast(i);
         }
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<>();
+        for (int i = 0; i < 10; i++) {
+            lld1.addLast(i);
+        }
 
         //Test1: Compare two equal deque.
         assertTrue("Two deques should be equal and returns True", ad1.equals(ad2));
@@ -116,6 +120,8 @@ public class ArrayDequeTest{
         assertFalse("Should return false if the argument is null", ad1.equals(o));
         //Test: Compare deque with different size.
         assertFalse("Should return false", ad1.equals(ad4));
+        //Test: Compare deque with different types.
+        assertFalse("Should return false", ad1.equals(lld1));
     }
 
 
