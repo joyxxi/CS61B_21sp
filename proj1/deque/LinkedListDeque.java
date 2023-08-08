@@ -49,7 +49,8 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
         size += 1;*/
         Node firstNode = sentinel.next;
         firstNode.prev = new Node(item, sentinel, firstNode);
-        //Cannot assign field "prev" because "firstNode" is null (Have to define sentinel.next and prev)
+        //Cannot assign field "prev" because "firstNode" is null
+        // (Have to define sentinel.next and prev)
         sentinel.next = firstNode.prev;
         size += 1;
     }
