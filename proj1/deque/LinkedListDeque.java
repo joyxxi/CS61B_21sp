@@ -4,8 +4,10 @@ import java.util.Iterator;
 
 /* Use circular sentinel to implement the deque.
 * Invariants:
-* 1. sentinel.next always points to the first item; sentinel.prev always points to the last item.
-* 2. The last item.next always points to the sentinel; the first item.prev always points to the sentinel.
+* 1. sentinel.next always points to the first item;
+* sentinel.prev always points to the last item.
+* 2. The last item.next always points to the sentinel;
+* the first item.prev always points to the sentinel.
 * */
 public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
 
@@ -30,7 +32,8 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
     /** Constructor of the deque. */
     public LinkedListDeque() {
         sentinel = new Node(null, null, null);
-        //sentinel = new Node(null, sentinel, sentinel); Error: Cannot assign field "prev" because "firstNode" is null
+        //sentinel = new Node(null, sentinel, sentinel);
+        // Error: Cannot assign field "prev" because "firstNode" is null
         sentinel.next = sentinel;
         sentinel.prev = sentinel;
         size = 0;
@@ -45,7 +48,8 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
         firstNode.prev.prev = sentinel;
         size += 1;*/
         Node firstNode = sentinel.next;
-        firstNode.prev = new Node(item, sentinel, firstNode); //Cannot assign field "prev" because "firstNode" is null (Have to define sentinel.next and prev)
+        firstNode.prev = new Node(item, sentinel, firstNode);
+        //Cannot assign field "prev" because "firstNode" is null (Have to define sentinel.next and prev)
         sentinel.next = firstNode.prev;
         size += 1;
     }
@@ -90,7 +94,8 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
         System.out.println();
     }
 
-    /** Removes and returns the item at the front of the deque. If no such item exists, returns null. */
+    /** Removes and returns the item at the front of the deque.
+     * If no such item exists, returns null. */
     @Override
     public T removeFirst() {
         if (isEmpty()) {
@@ -105,7 +110,8 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
         return item;
     }
 
-    /** Removes and returns the item at the back of the deque. If no such item exists, returns null. */
+    /** Removes and returns the item at the back of the deque.
+     * If no such item exists, returns null. */
     @Override
     public T removeLast() {
         if (isEmpty()) {
@@ -120,7 +126,8 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
         return item;
     }
 
-    /** Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
+    /** Gets the item at the given index,
+     * where 0 is the front, 1 is the next item, and so forth.
      * If no such item exists, returns null.
      * The deque cannot be altered.
      */
@@ -203,7 +210,10 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
 
     private class LLDIterator implements Iterator<T> {
         //Create a pointer always points to the next item
-        Node pos = sentinel.next;
+        Node pos;
+        private LLDIterator() {
+            pos = sentinel.next;
+        }
 
         @Override
         public boolean hasNext() {

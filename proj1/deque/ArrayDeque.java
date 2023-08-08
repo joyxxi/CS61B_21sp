@@ -15,7 +15,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
 
     /** Creates an empty list. */
     public ArrayDeque() {
-        items = (T[]) new Object[100];
+        items = (T[]) new Object[16];
         size = 0;
         nextFirst = 0;
         nextLast = 1;
@@ -184,7 +184,12 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     }
 
     private class DequeIterator implements Iterator<T> {
-        private int pos = backwardNext(nextFirst);
+        private int pos;
+
+        private DequeIterator() {
+            pos = backwardNext(nextFirst);
+        }
+
 
         @Override
         public boolean hasNext() {
