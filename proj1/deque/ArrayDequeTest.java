@@ -3,7 +3,7 @@ package deque;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class ArrayDequeTest {
+public class ArrayDequeTest{
 
     @Test
     /* Add a few items, checking isEmpty() and size() are correct.
@@ -32,7 +32,7 @@ public class ArrayDequeTest {
     /* Adds a few items, and then removes them. Make sure the deque is empty afterwards. */
     public void removeTest() {
         ArrayDeque<Integer> ad1 = new ArrayDeque<>();
-
+        //Test1:
         ad1.addFirst(2);
         ad1.addFirst(1);
         ad1.addLast(3);
@@ -47,6 +47,12 @@ public class ArrayDequeTest {
 
         ad1.removeFirst();
         assertTrue("The deque should be empty now", ad1.isEmpty());
+
+        //Test2: Remove from an empty deque, should return null and the size should still be 0.
+        assertNull("Remove from an empty deque should return null", ad1.removeFirst());
+        assertEquals("The size of the deque should still be 0", 0, ad1.size());
+        assertNull("Remove from an empty deque should return null", ad1.removeLast());
+        assertEquals("The size of the deque should still be 0", 0, ad1.size());
     }
 
     @Test
@@ -68,6 +74,50 @@ public class ArrayDequeTest {
 
         //Test4: general case to get the correct result, with resize() and usageControl()
     }
+
+    @Test
+    /* Test resize() and usageControl(). The usage factor of the array should always higher than 25. */
+    public void resizeTest() {
+        //Add 1000 items to the deque, and them remove 9999 items.
+        ArrayDeque<Integer> ad1 = new ArrayDeque<>();
+        for (int i = 0; i < 10000; i++) {
+            ad1.addLast(i);
+        }
+        for (int i = 0; i < 9999; i++) {
+            ad1.removeLast();
+        }
+    }
+
+    @Test
+    public void equalTest() {
+        ArrayDeque<Integer> ad1 = new ArrayDeque<>();
+        for (int i = 0; i < 10; i++) {
+            ad1.addLast(i);
+        }
+        ArrayDeque<Integer> ad2 = new ArrayDeque<>();
+        for (int i = 0; i < 10; i++) {
+            ad2.addLast(i);
+        }
+        ArrayDeque<Integer> ad3 = new ArrayDeque<>();
+        for (int i = 0; i < 10; i++) {
+            ad3.addFirst(i);
+        }
+        ArrayDeque<Integer> ad4 = new ArrayDeque<>();
+        for (int i = 0; i < 5; i++) {
+            ad4.addLast(i);
+        }
+
+        //Test1: Compare two equal deque.
+        assertTrue("Two deques should be equal and returns True", ad1.equals(ad2));
+        //Test2: Compare two unequal deque.
+        assertFalse("Two deques should be unequal and returns False", ad1.equals(ad3));
+        //Test3: Test the null case.
+        Object o = null;
+        assertFalse("Should return false if the argument is null", ad1.equals(o));
+        //Test: Compare deque with different size.
+        assertFalse("Should return false", ad1.equals(ad4));
+    }
+
 
 
 

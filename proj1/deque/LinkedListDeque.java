@@ -1,13 +1,17 @@
 package deque;
 
+import org.junit.Test;
+
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /* Use circular sentinel to implement the deque.
 * Invariants:
 * 1. sentinel.next always points to the first item; sentinel.prev always points to the last item.
 * 2. The last item.next always points to the sentinel; the first item.prev always points to the sentinel.
 * */
-public class LinkedListDeque<T> {
+public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
 
     /** Declare the basic unit NODE,
     which are made up of three parts:
@@ -38,6 +42,7 @@ public class LinkedListDeque<T> {
     }
 
     /** Add an item to the front of the deque. */
+    @Override
     public void addFirst(T item) {
         //Identify the first node. Invariants: sentinel.next always points to the first item.
 /*        Node firstNode = sentinel.next;
@@ -52,6 +57,7 @@ public class LinkedListDeque<T> {
     }
 
     /** Add an item to the back of the deque. */
+    @Override
     public void addLast(T item) {
 /*        Node lastNode = sentinel.prev;
         lastNode.next = new Node(item, sentinel);
@@ -65,16 +71,19 @@ public class LinkedListDeque<T> {
     }
 
     /** Returns true if deque is empty, false otherwise. */
-    public boolean isEmpty() {
-        return size == 0;
-    }
+//    @Override
+//    public boolean isEmpty() {
+//        return size == 0;
+//    }
 
     /** Returns the number of items in the deque. */
+    @Override
     public int size() {
         return size;
     }
 
     /** Print the items in the deque from first to last, separated by a space. */
+    @Override
     public void printDeque() {
         // Create a pointer which starts from the first item
         Node p = sentinel.next;
@@ -88,6 +97,7 @@ public class LinkedListDeque<T> {
     }
 
     /** Removes and returns the item at the front of the deque. If no such item exists, returns null. */
+    @Override
     public T removeFirst() {
         if (isEmpty()) {
             return null;
@@ -102,6 +112,7 @@ public class LinkedListDeque<T> {
     }
 
     /** Removes and returns the item at the back of the deque. If no such item exists, returns null. */
+    @Override
     public T removeLast() {
         if (isEmpty()) {
             return null;
@@ -119,6 +130,7 @@ public class LinkedListDeque<T> {
      * If no such item exists, returns null.
      * The deque cannot be altered.
      */
+    @Override
     public T get(int index) {
         //Create a pointer to track the location
         Node p = sentinel.next;
@@ -148,25 +160,64 @@ public class LinkedListDeque<T> {
         return getRecursiveHelper(index-1, p.next);
     }
 
+
     /** Returns whether the parameter O is equal to the Deque. */
-/*    public boolean equals(Object o) {
-        if (!(o instanceof LinkedListDeque)) {
-            return false;
-        }
-        if (isEmpty() && ((LinkedListDeque<?>) o).isEmpty()) {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        Node pDeque = sentinel.next;
-        Node pO = (Node) ((LinkedListDeque<?>) o).sentinel.next;
-        while (pDeque != null && pO != null) {
-            if (pDeque.item != pO.item) {
+        if (o == null) {
+            return false;
+        }
+        if (o instanceof LinkedListDeque other) {
+            if (other.size != this.size) {
                 return false;
             }
-            pDeque = pDeque.next;
-            pO = pO.next;
+            for (int i = 0; i < size-1; i++) {
+                T thisItem = this.get(i);
+                Object otherItem = (T) other.get(i);
+                if(!thisItem.equals(otherItem)) {
+                    return false;
+                }
+            }
         }
         return true;
+    }
+
+/*    @Override
+    public String toString() {
+        StringBuilder returnSB = new StringBuilder();
+        for (T x : this) {
+            returnSB.append(x);
+            returnSB.append(" ");
+        }
+        return returnSB.toString();
     }*/
+
+
+    /** Returns an iterator. */
+    @Override
+    public Iterator<T> iterator() {
+        return new lldIterator();
+    }
+
+    private class lldIterator implements Iterator<T> {
+        //Create a pointer always points to the next item
+        Node pos = sentinel.next;
+
+        @Override
+        public boolean hasNext() {
+            return pos.item != null;
+        }
+
+        @Override
+        public T next() {
+            T returnItem = pos.item;
+            pos = pos.next;
+            return returnItem;
+        }
+    }
 
 
 }

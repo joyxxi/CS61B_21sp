@@ -1,5 +1,6 @@
 package deque;
 
+import jh61b.junit.In;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -156,5 +157,55 @@ public class LinkedListDequeTest {
         //Test3: the deque is empty. Should be null.
         LinkedListDeque<Integer> lld2 = new LinkedListDeque<>();
         assertNull("Should return null", lld2.getRecursive(5));
+    }
+
+    @Test
+    /* Test if the deque is iterable. Test the concise for loop. */
+    public void iteratorTest() {
+        LinkedListDeque<String> lld1 = new LinkedListDeque<>();
+        lld1.addLast("Birds");
+        lld1.addLast("Dogs");
+        lld1.addLast("Flowers");
+
+        StringBuilder returnSB = new StringBuilder();
+        for (String item: lld1) {
+            returnSB.append(item);
+            returnSB.append(" ");
+        }
+        String expectString = "Birds Dogs Flowers ";
+        String actualString = returnSB.toString();
+        assertEquals("Two strings should be the same", expectString, actualString);
+    }
+
+    @Test
+    /* Separately compares two equal and unequal deque, and tests if equals() works. */
+    public void equalsTest() {
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<>();
+        for (int i = 0; i < 10; i++) {
+            lld1.addLast(i);
+        }
+        LinkedListDeque<Integer> lld2 = new LinkedListDeque<>();
+        for (int i = 0; i < 10; i++) {
+            lld2.addLast(i);
+        }
+        LinkedListDeque<Integer> lld3 = new LinkedListDeque<>();
+        for (int i = 0; i < 10; i++) {
+            lld3.addFirst(i);
+        }
+        LinkedListDeque<Integer> lld4 = new LinkedListDeque<>();
+        for (int i = 0; i < 5; i++) {
+            lld4.addLast(i);
+        }
+
+        //Test1: Compare two equal deque.
+        assertTrue("Two deques should be equal and returns True", lld1.equals(lld2));
+        //Test2: Compare two unequal deque.
+        assertFalse("Two deques should be unequal and returns False", lld1.equals(lld3));
+        //Test3: Test the null case.
+        Object o = null;
+        assertFalse("Should return false if the argument is null", lld1.equals(o));
+        //Test: Compare deque with different size.
+        assertFalse("Should return false", lld1.equals(lld4));
+
     }
 }
