@@ -35,7 +35,9 @@ public class Dog implements Serializable{
 
     /**
      * Reads in and deserializes a dog from a file with name NAME in DOG_FOLDER.
-     *
+     *Disjoint Sets and Asymptotics
+Scheduled: Aug 15, 2023 at 11:00 AM to 12:00 PM, PDT
+
      * @param name Name of dog to load
      * @return Dog read from file
      */
