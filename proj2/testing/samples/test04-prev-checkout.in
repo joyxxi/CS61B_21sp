@@ -1,4 +1,5 @@
 # Check that we can check out a previous version.
+# Test checkout commit id and file name
 I definitions.inc
 > init
 <<<
